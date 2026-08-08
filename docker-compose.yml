@@ -1,0 +1,65 @@
+services:
+  # ============================================
+  # MySQL Database
+  # ============================================
+  mysql:
+    image: mysql:8.0
+    container_name: sharing-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: article_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sharing-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # ============================================
+  # Article Service (Python FastAPI)
+  # ============================================
+  article-service:
+    build: ./article-service
+    container_name: sharing-article-service
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: mysql+pymysql://app_user:app_password@mysql:3306/article_db
+      PORT: 8001
+    ports:
+      - "8001:8001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - sharing-network
+
+  # ============================================
+  # API Gateway (Node.js)
+  # ============================================
+  api-gateway:
+    build: ./api-gateway
+    container_name: sharing-api-gateway
+    restart: unless-stopped
+    environment:
+      PORT: 8080
+      ARTICLE_SERVICE_URL: http://article-service:8001
+    ports:
+      - "8080:8080"
+    depends_on:
+      - article-service
+    networks:
+      - sharing-network
+
+volumes:
+  mysql_data:
+
+networks:
+  sharing-network:
+    driver: bridge

@@ -1,0 +1,72 @@
+{
+  "info": {
+    "name": "Sharing Vision - Article API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Article",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"This is a valid title with more than 20 chars\",\n    \"content\": \"This is a valid content with more than 200 characters. This is a valid content with more than 200 characters. This is a valid content with more than 200 characters. This is a valid content with more than 200 characters. This is a valid content with more than 200 characters. This is a valid content with more than 200 characters. This is a valid content with more than 200 characters. This is a valid content with more than 200 characters.\",\n    \"category\": \"Tech\",\n    \"status\": \"Publish\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{base_url}}/article", "host": ["{{base_url}}"], "path": ["article"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Articles (paging)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/article?limit=10&offset=0",
+          "host": ["{{base_url}}"],
+          "path": ["article"],
+          "query": [
+            { "key": "limit", "value": "10" },
+            { "key": "offset", "value": "0" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Article by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/article/1", "host": ["{{base_url}}"], "path": ["article", "1"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Article (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"Updated title with more than 20 chars\"\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{base_url}}/article/1", "host": ["{{base_url}}"], "path": ["article", "1"] }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Article",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": { "raw": "{{base_url}}/article/1", "host": ["{{base_url}}"], "path": ["article", "1"] }
+      },
+      "response": []
+    }
+  ],
+  "variable": [{ "key": "base_url", "value": "http://localhost:8000" }]
+}
