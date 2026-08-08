@@ -1,8 +1,3 @@
-## ✅ README Backend yang Lengkap dengan Instalasi Node Modules
-
-Karena `node_modules` tidak di-upload ke Git (sudah di-.gitignore), maka **orang yang clone project harus install sendiri**.
-
----
 
 ## 📁 Backend README
 
